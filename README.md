@@ -66,8 +66,38 @@ As a Computer Science graduate targeting IT support, helpdesk, and sysadmin-adja
 
 ## Roadmap
 
-- [ ] Install Active Directory Domain Services on the Windows Server VM
+- [X] Install Active Directory Domain Services on the Windows Server VM
 - [ ] Create test user accounts and organizational units
 - [ ] Switch VM networking from NAT to Internal/Bridged to enable connectivity testing between VMs
 - [ ] Join a client VM to the domain
 - [ ] Document basic Group Policy configuration
+
+
+## Day 2: Active Directory Domain Services
+
+**Goal:** Turn the Windows Server VM into a functioning domain controller and practice core AD administration tasks.
+
+**What I did:**
+- Installed the **Active Directory Domain Services (AD DS)** role via Server Manager's "Add Roles and Features" wizard
+- Promoted the server to a **domain controller**, creating a new forest with the domain `homelab.local`
+- Set a Directory Services Restore Mode (DSRM) password (kept separate from the Administrator password)
+- Accepted the expected DNS delegation warning (normal for an internal lab domain with no parent DNS)
+- Verified the promotion by confirming domain login format (`HOMELAB\Administrator`) and the new AD DS role appearing in Server Manager
+- Opened **Active Directory Users and Computers** and created an **Organizational Unit (OU)** to hold test accounts
+- Created a **test user account** inside the OU, applying Windows' default password complexity rules (8+ characters, 3 of 4 character types, can't contain the username)
+
+<img width="1024" height="768" alt="VirtualBox_WinServer_31_08_2026_14_09_40" src="https://github.com/user-attachments/assets/3ee02f62-f125-4679-9b14-3c2c63eeaa95" />
+
+<img width="1024" height="768" alt="VirtualBox_WinServer_31_08_2026_14_35_15" src="https://github.com/user-attachments/assets/a1b7c710-978c-4f35-b2f6-7982590745c5" />
+
+<img width="1024" height="768" alt="VirtualBox_WinServer_31_08_2026_14_55_09" src="https://github.com/user-attachments/assets/cfc7195b-1b85-4046-bdf5-31889f3152f1" />
+
+**Troubleshooting / What I learned:**
+- Attempted to log in locally as the new test user and hit: *"The sign-in method you're trying to use is not allowed."*
+- Root cause: Domain Controllers restrict interactive/local logon to privileged groups (Administrators, Server Operators, etc.) by default — regular domain users are intentionally blocked from logging directly into the DC as a security measure.
+- Learned that in a real environment, regular users log into a **domain-joined client machine**, not the DC itself — confirms the account/domain setup is correct, just tested from the wrong machine.
+
+**Next milestone:** Add a Windows 10/11 client VM, join it to `homelab.local`, and properly test user login from the client. Also plan to create a security group and practice group-based permissions.
+
+
+
