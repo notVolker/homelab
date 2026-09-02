@@ -99,5 +99,6 @@ As a Computer Science graduate targeting IT support, helpdesk, and sysadmin-adja
 
 **Next milestone:** Add a Windows 10/11 client VM, join it to `homelab.local`, and properly test user login from the client. Also plan to create a security group and practice group-based permissions.
 
+<img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/b9dad4a5-9557-4d4f-8421-4e8c8772a614" />
 
 
