@@ -67,9 +67,9 @@ As a Computer Science graduate targeting IT support, helpdesk, and sysadmin-adja
 ## Roadmap
 
 - [X] Install Active Directory Domain Services on the Windows Server VM
-- [ ] Create test user accounts and organizational units
-- [ ] Switch VM networking from NAT to Internal/Bridged to enable connectivity testing between VMs
-- [ ] Join a client VM to the domain
+- [X] Create test user accounts and organizational units
+- [X] Switch VM networking from NAT to Internal/Bridged to enable connectivity testing between VMs
+- [X] Join a client VM to the domain
 - [ ] Document basic Group Policy configuration
 
 
@@ -99,6 +99,37 @@ As a Computer Science graduate targeting IT support, helpdesk, and sysadmin-adja
 
 **Next milestone:** Add a Windows 10/11 client VM, join it to `homelab.local`, and properly test user login from the client. Also plan to create a security group and practice group-based permissions.
 
+## Day 3: Client VM, Networking, and Domain Join
+
+**Goal:** Add a Windows client machine, network it with the Domain Controller, join it to the domain, and confirm a domain user can log in properly.
+
+**What I did:**
+- Attempted a Windows 11 client VM first, but hit a hardware compatibility block ("this device can't run Windows 11 Pro") due to Windows 11's TPM/RAM requirements not fitting the VM's allocated resources
+- Switched to **Windows 10 Pro** instead — same Active Directory join capability, no TPM/Secure Boot requirements, and fits comfortably within the 8GB host RAM budget
+- Created the **WinClient** VM (2048 MB RAM, 1 CPU, 40 GB disk) and installed Windows 10 Pro via custom/clean install with a local account
+- Switched both **WinServer** and **WinClient** network adapters from NAT to **Internal Network** (same network name) so the VMs could communicate directly
+- Discovered Internal Network has no DHCP server, so both machines needed **static IP addresses** configured manually:
+  - WinServer: `10.0.5.1`, DNS pointed to itself (`127.0.0.1`)
+  - WinClient: `10.0.5.10`, DNS pointed to WinServer (`10.0.5.1`)
+- Verified connectivity with `ping` between the two VMs (confirmed 0% packet loss once both static IPs were correctly set and both VMs were running simultaneously)
+- Joined WinClient to the `homelab.local` domain using `HOMELAB\Administrator` credentials
+- Successfully logged into WinClient as the domain test user (`testuser1`) — this time without the "sign-in method not allowed" error from Day 2, since this is a proper domain-joined client rather than the Domain Controller itself
+
+**Troubleshooting / What I learned:**
+- Windows 11's hardware requirements (TPM 2.0, 4GB+ RAM) made it impractical for this lab's resource constraints — Windows 10 Pro is a fully valid substitute for practicing AD concepts
+- The newer Windows Settings app's static IP editor had a persistent "Can't save IP settings" bug when using subnet prefix length; switching to the classic Network Connections control panel (`ncpa.cpl`) resolved it reliably
+- Internal Network adapters in VirtualBox provide full isolation but require manual static IP configuration on every machine, since there's no DHCP server on that network segment
+- Confirmed both machines must be powered on simultaneously for domain authentication and client-server testing to work — a shift from the "one VM at a time" habit used earlier in the project
+
+**Result:** Full end-to-end Active Directory environment — a Domain Controller and a domain-joined client, with a working test user login on the client machine.
+
 <img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/b9dad4a5-9557-4d4f-8421-4e8c8772a614" />
+
+<img width="944" height="812" alt="image" src="https://github.com/user-attachments/assets/e45c064d-8f75-4626-bcb5-435dd2388f73" />
+
+<img width="924" height="835" alt="image" src="https://github.com/user-attachments/assets/d538c9df-8da4-4370-b1f1-1e2ba4cc7383" />
+
+**Next milestone:** Explore Group Policy basics, create a security group and test group-based permissions, and continue documenting the AD structure (computer objects, OU, user properties) with screenshots.
+
 
 
