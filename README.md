@@ -131,5 +131,32 @@ As a Computer Science graduate targeting IT support, helpdesk, and sysadmin-adja
 
 **Next milestone:** Explore Group Policy basics, create a security group and test group-based permissions, and continue documenting the AD structure (computer objects, OU, user properties) with screenshots.
 
+## Day 4: Group Policy Management
+
+**Goal:** Push a configuration setting from the Domain Controller to a client machine using Group Policy, completing the last item on the original roadmap.
+
+**What I did:**
+- Opened **Group Policy Management** on WinServer (Server Manager → Tools → Group Policy Management)
+- Created a new GPO named **"Test-Wallpaper-Policy"**, linked directly to the **IT-Support** OU (rather than the whole domain) so it only affects test accounts
+- Configured **User Configuration → Policies → Administrative Templates → Desktop → Desktop → Desktop Wallpaper**, enabling it and pointing to a built-in Windows wallpaper path
+- Ran `gpupdate /force` on WinClient (logged in as `testuser1`) to manually trigger policy application instead of waiting for the default refresh interval
+- Confirmed successful application: **"Computer Policy update has completed successfully. User Policy update has completed successfully."**
+- Logged off and back on as `testuser1` to confirm the desktop wallpaper visually updated to match the GPO setting
+
+**Troubleshooting / What I learned:**
+- First `gpupdate /force` attempt failed with a network connectivity error, even though `ping` between WinClient and WinServer succeeded
+- Diagnosed further with `nslookup homelab.local` — the first DNS query timed out, but a retry succeeded, pointing to a **transient DNS delay** right after a VM reboot rather than a real connectivity or firewall problem
+- Verified WinServer's network was correctly recognized as the **domain network profile** (not stuck on Public), confirming firewall wasn't the blocker
+- Learned that `gpupdate` requires more than basic ping connectivity — it depends on DNS resolution and AD service availability, so it can fail even when ICMP (ping) succeeds
+- Simply retrying `gpupdate /force` after confirming DNS worked resolved the issue completely
+
+**Result:** Successfully demonstrated a full Group Policy push from Domain Controller to client — completing every item on the original project roadmap (AD DS install → OU/users → networking → domain join → Group Policy).
+
+<img width="945" height="845" alt="4bb4cbe5-730f-4587-89e9-075f5b634dbf" src="https://github.com/user-attachments/assets/e9360735-324a-4795-80df-56f3fb8a6f1b" />
+
+<img width="940" height="838" alt="2" src="https://github.com/user-attachments/assets/690de39a-de1a-4db0-8729-11cd82a9dfa6" />
+
+**Next milestone:** Consider expanding the lab further — e.g. a second GPO (like password policy or a login script), a security group with permission-based practice, or moving into basic network segmentation (VLANs/pfSense) as outlined in earlier project ideas.
+
 
 
