@@ -156,6 +156,14 @@ As a Computer Science graduate targeting IT support, helpdesk, and sysadmin-adja
 
 <img width="940" height="838" alt="2" src="https://github.com/user-attachments/assets/690de39a-de1a-4db0-8729-11cd82a9dfa6" />
 
+<img width="931" height="845" alt="image" src="https://github.com/user-attachments/assets/b43fc7fe-e17f-48a2-afe1-36e3835ee506" />
+
+<img width="938" height="837" alt="image" src="https://github.com/user-attachments/assets/30178f8e-4fbb-46ce-8da1-f17abf2bb328" />
+
+<img width="1012" height="842" alt="image" src="https://github.com/user-attachments/assets/1e0b5fe6-512f-4e0e-a15a-1779f97855b6" />
+
+<img width="942" height="829" alt="image" src="https://github.com/user-attachments/assets/3ab92586-e999-4c7c-8e56-47fb9c7cff34" />
+
 **Next milestone:** Consider expanding the lab further — e.g. a second GPO (like password policy or a login script), a security group with permission-based practice, or moving into basic network segmentation (VLANs/pfSense) as outlined in earlier project ideas.
 
 
